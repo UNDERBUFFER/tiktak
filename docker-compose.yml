@@ -20,3 +20,9 @@ services:
     environment:
       MONGODB_CONNECTION_STRING: mongodb://root:toor@mongo:27017
     command: npm start dev
+
+  maildump:
+    image: ball6847/maildump
+    restart: always
+    ports:
+      - 21025:1025

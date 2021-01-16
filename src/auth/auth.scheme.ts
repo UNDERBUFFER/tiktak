@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as ForeignKey } from 'mongoose';
+import { UserDocument } from 'src/user/user.schema';
 
 export type AuthCodeDocument = AuthCode & Document;
 
@@ -15,7 +16,7 @@ export class AuthCode {
     type: ForeignKey.Types.ObjectId,
     ref: 'User'
   })
-  user: any;
+  user: UserDocument;
 }
 
 export const AuthCodeSchema = SchemaFactory.createForClass(AuthCode);

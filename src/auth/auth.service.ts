@@ -4,16 +4,25 @@ import { Model } from 'mongoose';
 import { Auth as AuthCodeInterface } from './auth.interface';
 import { AuthCode, AuthCodeDocument } from './auth.scheme';
 import { randomBytes } from 'crypto'
+import { MailerService } from '@nestjs-modules/mailer';
+import { UserDocument } from 'src/user/user.schema';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel(AuthCode.name) private authCodeModel: Model<AuthCodeDocument>) {}
+  constructor(@InjectModel(AuthCode.name) private authCodeModel: Model<AuthCodeDocument>,
+    private readonly mailerService: MailerService) {}
 
-  async create(): Promise<AuthCodeDocument> {
+  async create(user: UserDocument): Promise<AuthCodeDocument> {
     const data: AuthCodeInterface = {
-      code: randomBytes(20).toString('hex')
+      code: randomBytes(20).toString('hex'),
+      user
     };
     const authCode = new this.authCodeModel(data);
+    await this.mailerService.sendMail({
+      to: user.email,
+      subject: 'Authorization code',
+      text: data.code
+    });
     return authCode.save();
   }
 

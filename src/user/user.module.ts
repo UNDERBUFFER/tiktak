@@ -4,7 +4,7 @@ import { User, UserSchema } from './schemas/user.schema';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { AuthService } from 'src/auth/auth.service';
-import { AuthCode, AuthCodeSchema } from 'src/auth/schemas/auth.scheme';
+import { AuthCode, AuthCodeSchema } from 'src/auth/schemas/authcode.schema';
 
 @Module({
   imports: [

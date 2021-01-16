@@ -1,5 +1,5 @@
-import { Controller, Body, Get, Param, Post, Render, Res } from '@nestjs/common';
-import { AuthCode, AuthCodeDocument } from 'src/auth/schemas/auth.scheme';
+import { Controller, Body, Get, Param, Post, Render } from '@nestjs/common';
+import { AuthCodeDocument } from 'src/auth/schemas/authcode.schema';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/user.dto';
 import { UserDocument } from './schemas/user.schema';
@@ -18,9 +18,9 @@ export class UserController {
 
     @Post()
     @Render('check-email.hbs')
-    async create(@Body() createUserDto: CreateUserDto, @Res() res: any): Promise<UserDocument> {
+    async create(@Body() createUserDto: CreateUserDto): Promise<UserDocument> {
         const user: UserDocument = await this.userService.create(createUserDto)
-        const authCode: AuthCodeDocument = await this.authService.create(user)
+        await this.authService.create(user)
         return user
     }
 }

@@ -1,8 +1,8 @@
 import { Controller, Body, Get, Param, Post, Render, Res } from '@nestjs/common';
-import { AuthCode, AuthCodeDocument } from 'src/auth/auth.scheme';
+import { AuthCode, AuthCodeDocument } from 'src/auth/schemas/auth.scheme';
 import { AuthService } from 'src/auth/auth.service';
-import { CreateUserDto } from './user.dto';
-import { UserDocument } from './user.schema';
+import { CreateUserDto } from './dto/user.dto';
+import { UserDocument } from './schemas/user.schema';
 import { UserService } from './user.service';
 
 @Controller('user')

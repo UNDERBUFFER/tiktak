@@ -3,8 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { AuthCode, AuthCodeSchema } from './auth.scheme';
-import { User, UserSchema } from 'src/user/user.schema';
+import { AuthCode, AuthCodeSchema } from './schemas/auth.scheme';
+import { User, UserSchema } from 'src/user/schemas/user.schema';
 
 @Module({
   imports: [

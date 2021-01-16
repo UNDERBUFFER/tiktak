@@ -1,4 +1,4 @@
-import { CreateUserDto } from "src/user/user.dto";
+import { CreateUserDto } from "src/user/dto/user.dto";
 
 export interface Auth {
     code: string,

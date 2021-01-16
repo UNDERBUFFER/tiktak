@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Auth as AuthCodeInterface } from './auth.interface';
-import { AuthCode, AuthCodeDocument } from './auth.scheme';
+import { AuthCode, AuthCodeDocument } from './schemas/auth.scheme';
 import { randomBytes } from 'crypto'
 import { MailerService } from '@nestjs-modules/mailer';
-import { UserDocument } from 'src/user/user.schema';
+import { UserDocument } from 'src/user/schemas/user.schema';
 
 @Injectable()
 export class AuthService {

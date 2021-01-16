@@ -8,7 +8,7 @@ export class LoggingMiddleware implements NestMiddleware {
       method: req.method,
       path: req.path,
       status: res.statusCode
-    }, null, ' '))
+    }, null, ' '));
     next();
   }
 }

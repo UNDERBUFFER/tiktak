@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { UserService } from './user/user.service';
-import { decrypt } from './user/utils/encrypt.util';
+import { UserService } from '../user/user.service';
+import { decrypt } from '../user/utils/encrypt.util';
 
 @Injectable()
 export class UserMiddleware implements NestMiddleware {

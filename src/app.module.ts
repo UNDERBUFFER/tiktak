@@ -4,8 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { UserMiddleware } from './user.middleware';
-import { LoggingMiddleware } from './logging.middleware';
+import { UserMiddleware } from './middlewares/user.middleware';
+import { LoggingMiddleware } from './middlewares/logging.middleware';
 import { UserService } from './user/user.service';
 import { User, UserSchema } from './user/schemas/user.schema';
 

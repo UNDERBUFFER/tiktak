@@ -1,6 +1,6 @@
-import { CreateUserDto } from "src/user/dto/user.dto";
+import { UserDocument } from "src/user/schemas/user.schema";
 
 export interface Auth {
     code: string,
-    user: CreateUserDto
+    user: UserDocument
 }

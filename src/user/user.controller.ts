@@ -20,7 +20,7 @@ export class UserController {
     @Render('check-email.hbs')
     async create(@Body() createUserDto: CreateUserDto): Promise<UserDocument> {
         const user: UserDocument = await this.userService.create(createUserDto)
-        await this.authService.create(user)
+        console.log(`code ${(await this.authService.create(user)).code}`)
         return user
     }
 }

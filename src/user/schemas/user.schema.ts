@@ -7,17 +7,29 @@ export type UserDocument = User & Document;
 export class User {
   @Prop({
     type: String,
-    unique: true
+    unique: true,
+    required: true
   })
   nickname: string;
 
   @Prop({
     type: String,
-    unique: true
+    unique: true,
+    required: true
   })
   email: string;
 
-  // TODO: photo, description
+  @Prop({
+    type: String,
+    default: ''
+  })
+  description: string;
+
+  @Prop({
+    type: String,
+    default: ''
+  })
+  avatarPath: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

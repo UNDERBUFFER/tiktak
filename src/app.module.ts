@@ -8,6 +8,7 @@ import { UserMiddleware } from './middlewares/user.middleware';
 import { LoggingMiddleware } from './middlewares/logging.middleware';
 import { UserService } from './user/user.service';
 import { User, UserSchema } from './user/schemas/user.schema';
+import { ClipsModule } from './clips/clips.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { User, UserSchema } from './user/schemas/user.schema';
       }
     ]),
     UserModule,
-    AuthModule
+    AuthModule,
+    ClipsModule
   ],
   controllers: [AppController],
   providers: [AppService, UserService],

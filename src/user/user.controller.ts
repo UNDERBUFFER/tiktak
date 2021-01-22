@@ -1,4 +1,4 @@
-import { Controller, Body, Get, Param, Post, Render } from '@nestjs/common';
+import { Controller, Body, Get, Param, Post, Render, Res, Req } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/create.dto';
 import { UserDocument } from './schemas/user.schema';
@@ -30,5 +30,13 @@ export class UserController {
         const user: UserDocument = await this.userService.getById(confirnUserDto.email);
         console.log(`code ${(await this.authService.create(user)).code}`);
         return user;
+    }
+
+    @Get('auth')
+    @Render('auth.hbs')
+    auth(@Res({ passthrough: true }) res: any, @Req() req: any): any {
+        const _id: string | null = req.cookies['_id'];
+        if (_id) res.redirect(`/user${_id}`);
+        return {};
     }
 }

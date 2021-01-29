@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { writeFile } from 'fs';
 import { Model } from 'mongoose';
+import { join } from 'path';
 import { UserDocument } from 'src/user/schemas/user.schema';
 import { Clip as ClipInterface } from './interfaces/clip.interface';
 import { Like as LikeInterface } from './interfaces/like.interface';
@@ -39,5 +41,13 @@ export class ClipsService {
     };
     const like = new this.likeModel(data);
     return like.save();
+  }
+
+  uploadFileToSystem(filename: string, buffer: Buffer): string {
+    const path = `${join(__dirname, '..', '..', 'public', 'clips')}/${filename}`;
+    writeFile(path, buffer, (err) => {
+      if (err) throw err;
+    });
+    return path;
   }
 }

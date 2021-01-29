@@ -10,17 +10,17 @@ import { AuthCode, AuthCodeSchema } from './schemas/authcode.schema';
     MongooseModule.forFeature([
       {
         name: AuthCode.name,
-        schema: AuthCodeSchema
-      }
+        schema: AuthCodeSchema,
+      },
     ]),
     MailerModule.forRoot({
       transport: process.env.SMTP_SERVER ?? '',
       defaults: {
         from: `"nest-modules" <${process.env.FROM_EMAIL ?? ''}>`,
-      }
-    })
+      },
+    }),
   ],
   controllers: [AuthController],
-  providers: [AuthService]
+  providers: [AuthService],
 })
 export class AuthModule {}

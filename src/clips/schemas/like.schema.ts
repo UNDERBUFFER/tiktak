@@ -9,13 +9,13 @@ export type LikeDocument = Like & Document;
 export class Like {
   @Prop({
     type: ForeignKey.Types.ObjectId,
-    ref: 'Clip'
+    ref: 'Clip',
   })
   clip: ClipDocument;
 
   @Prop({
     type: ForeignKey.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   })
   user: UserDocument;
 }

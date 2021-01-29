@@ -11,15 +11,15 @@ import { AuthCode, AuthCodeSchema } from 'src/auth/schemas/authcode.schema';
     MongooseModule.forFeature([
       {
         name: User.name,
-        schema: UserSchema
+        schema: UserSchema,
       },
       {
         name: AuthCode.name,
-        schema: AuthCodeSchema
-      }
-    ])
+        schema: AuthCodeSchema,
+      },
+    ]),
   ],
   controllers: [UserController],
-  providers: [UserService, AuthService]
+  providers: [UserService, AuthService],
 })
 export class UserModule {}

@@ -13,17 +13,17 @@ import { ClipsModule } from './clips/clips.module';
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGODB_CONNECTION_STRING ?? '', {
-      useNewUrlParser: true
+      useNewUrlParser: true,
     }),
     MongooseModule.forFeature([
       {
         name: User.name,
-        schema: UserSchema
-      }
+        schema: UserSchema,
+      },
     ]),
     UserModule,
     AuthModule,
-    ClipsModule
+    ClipsModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService],

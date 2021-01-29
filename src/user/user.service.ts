@@ -20,7 +20,7 @@ export class UserService {
 
   async getByEmail(email: string): Promise<UserDocument> {
     const user = await this.userModel.findOne({
-      email
+      email,
     });
     return user;
   }

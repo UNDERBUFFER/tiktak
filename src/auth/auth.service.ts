@@ -3,40 +3,44 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuthCode as AuthCodeInterface } from './interfaces/authcode.interface';
 import { AuthCode, AuthCodeDocument } from './schemas/authcode.schema';
-import { randomBytes } from 'crypto'
+import { randomBytes } from 'crypto';
 import { MailerService } from '@nestjs-modules/mailer';
 import { UserDocument } from 'src/user/schemas/user.schema';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel(AuthCode.name) private authCodeModel: Model<AuthCodeDocument>,
-    private readonly mailerService: MailerService) {}
+  constructor(
+    @InjectModel(AuthCode.name) private authCodeModel: Model<AuthCodeDocument>,
+    private readonly mailerService: MailerService,
+  ) {}
 
   async create(user: UserDocument): Promise<AuthCodeDocument> {
     const data: AuthCodeInterface = {
       code: randomBytes(20).toString('hex'),
-      user
+      user,
     };
     const authCode = new this.authCodeModel(data);
     await this.mailerService.sendMail({
       to: user.email,
       subject: 'Authorization code',
-      text: data.code
+      text: data.code,
     });
     return authCode.save();
   }
 
   async get(code: string): Promise<AuthCodeDocument> {
     const authCode = await this.authCodeModel.findOne({
-      code
+      code,
     });
     return authCode;
   }
 
   async delete(code: string): Promise<any> {
-    const deletedAuthCode = await this.authCodeModel.findOne({
-      code
-    }).remove();
+    const deletedAuthCode = await this.authCodeModel
+      .findOne({
+        code,
+      })
+      .remove();
     return deletedAuthCode;
   }
 }

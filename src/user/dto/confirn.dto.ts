@@ -1,3 +1,3 @@
 export class ConfirnUserDto {
-    email: string;
+  email: string;
 }

@@ -8,13 +8,13 @@ export type AuthCodeDocument = AuthCode & Document;
 export class AuthCode {
   @Prop({
     type: String,
-    unique: true
+    unique: true,
   })
   code: string;
 
   @Prop({
     type: ForeignKey.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   })
   user: UserDocument;
 }

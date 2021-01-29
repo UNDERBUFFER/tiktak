@@ -8,26 +8,26 @@ export class User {
   @Prop({
     type: String,
     unique: true,
-    required: true
+    required: true,
   })
   nickname: string;
 
   @Prop({
     type: String,
     unique: true,
-    required: true
+    required: true,
   })
   email: string;
 
   @Prop({
     type: String,
-    default: ''
+    default: '',
   })
   description: string;
 
   @Prop({
     type: String,
-    default: ''
+    default: '',
   })
   avatarPath: string;
 }

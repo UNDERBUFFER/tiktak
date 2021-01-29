@@ -8,13 +8,13 @@ export type ClipDocument = Clip & Document;
 export class Clip {
   @Prop({
     type: String,
-    unique: true
+    unique: true,
   })
   path: string;
 
   @Prop({
     type: ForeignKey.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   })
   user: UserDocument;
 }

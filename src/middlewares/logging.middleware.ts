@@ -3,12 +3,18 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 @Injectable()
 export class LoggingMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
-    console.log(JSON.stringify({
-      user: req.user,
-      method: req.method,
-      path: req.path,
-      status: res.statusCode
-    }, null, ' '));
+    console.log(
+      JSON.stringify(
+        {
+          user: req.user,
+          method: req.method,
+          path: req.path,
+          status: res.statusCode,
+        },
+        null,
+        ' ',
+      ),
+    );
     next();
   }
 }

@@ -10,15 +10,15 @@ import { Like, LikeSchema } from './schemas/like.schema';
     MongooseModule.forFeature([
       {
         name: Clip.name,
-        schema: ClipSchema
+        schema: ClipSchema,
       },
       {
         name: Like.name,
-        schema: LikeSchema
-      }
-    ])
+        schema: LikeSchema,
+      },
+    ]),
   ],
   controllers: [ClipsController],
-  providers: [ClipsService]
+  providers: [ClipsService],
 })
 export class ClipsModule {}

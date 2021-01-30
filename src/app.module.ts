@@ -10,6 +10,7 @@ import { UserService } from './user/user.service';
 import { ClipsModule } from './clips/clips.module';
 import { AuthService } from './auth/auth.service';
 import { AuthCode, AuthCodeSchema } from './auth/schemas/authcode.schema';
+import { User, UserSchema } from './user/schemas/user.schema';
 
 @Module({
   imports: [
@@ -22,12 +23,18 @@ import { AuthCode, AuthCodeSchema } from './auth/schemas/authcode.schema';
         schema: AuthCodeSchema,
       },
     ]),
+    MongooseModule.forFeature([
+      {
+        name: User.name,
+        schema: UserSchema,
+      },
+    ]),
     UserModule,
     AuthModule,
     ClipsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService],
+  providers: [AppService, AuthService, UserService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

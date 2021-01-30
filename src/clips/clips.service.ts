@@ -17,7 +17,7 @@ export class ClipsService {
     @InjectModel(Clip.name) private clipModel: Model<ClipDocument>,
     @InjectModel(Like.name) private likeModel: Model<LikeDocument>,
   ) {
-    this.fileFormat = process.env.FILE_FORMAT ?? 'mp4';
+    this.fileFormat = process.env.CLIP_FORMAT ?? 'mp4';
   }
 
   async create(user: UserDocument, path: string): Promise<ClipDocument> {
@@ -64,6 +64,6 @@ export class ClipsService {
     writeFile(path, buffer, (err) => {
       if (err) throw err;
     });
-    return path;
+    return `/public/clips/${filename}`;
   }
 }

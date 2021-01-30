@@ -6,6 +6,10 @@ import {
   Post,
   CACHE_MANAGER,
   Inject,
+  Put,
+  UseInterceptors,
+  UploadedFiles,
+  Req,
 } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/create.dto';
@@ -13,6 +17,8 @@ import { UserDocument } from './schemas/user.schema';
 import { UserService } from './user.service';
 import { ConfirnUserDto } from './dto/confirn.dto';
 import { Cache } from 'cache-manager';
+import { UpdateUserDto } from './dto/update.dto';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
 export class UserController {
@@ -26,6 +32,34 @@ export class UserController {
   async findOne(@Param('id') id: string): Promise<UserDocument> {
     const user: UserDocument = await this.userService.getById(id);
     return user;
+  }
+
+  @Put(':id')
+  async updateUser(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @Req() request,
+  ): Promise<UserDocument | {}> {
+    if (String(request.user._id) !== id) return {};
+    return await this.userService.update(id, updateUserDto);
+  }
+
+  @Post(':id/avatar')
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'avatar', maxCount: 1 }]))
+  async uploadAvatar(
+    @UploadedFiles() files,
+    @Param('id') id: string,
+    @Req() request,
+  ): Promise<UserDocument | {}> {
+    if (String(request.user._id) !== id) return {};
+    const buffer: Buffer = files.avatar[0].buffer;
+    const fileName: string = this.userService.generateFileName(
+      request.user.nickname,
+    );
+    const avatarPath = this.userService.uploadFileToSystem(fileName, buffer);
+    // const data = new UpdateUserDto()
+    // data.avatarPath = avatarPath
+    return await this.userService.update(id, { avatarPath });
   }
 
   @Post('registration')

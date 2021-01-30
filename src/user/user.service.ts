@@ -4,14 +4,20 @@ import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create.dto';
 import { User, UserDocument } from './schemas/user.schema';
 import { createCipher, createDecipher } from 'crypto';
+import { UpdateUserDto } from './dto/update.dto';
+import { randomBytes } from 'crypto';
+import { join } from 'path';
+import { writeFile } from 'fs';
 
 @Injectable()
 export class UserService {
   hashAlgorithm: string;
   hashKey: string;
+  fileFormat: string;
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {
     this.hashAlgorithm = 'aes-192-cbc';
     this.hashKey = process.env.ENCRYPT_KEY ?? '';
+    this.fileFormat = process.env.AVATART_FORMAT ?? 'png';
   }
 
   async create(createUserDto: CreateUserDto): Promise<UserDocument> {
@@ -29,6 +35,33 @@ export class UserService {
       email,
     });
     return user;
+  }
+
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserDocument> {
+    return this.userModel.updateOne({ _id: id }, { $set: updateUserDto });
+  }
+
+  generateFileName(uniqueString: string): string {
+    return `${uniqueString}-avatar-${randomBytes(20).toString('hex')}.${
+      this.fileFormat
+    }`;
+  }
+
+  uploadFileToSystem(filename: string, buffer: Buffer): string {
+    const path = `${join(
+      __dirname,
+      '..',
+      '..',
+      'public',
+      'avatars',
+    )}/${filename}`;
+    writeFile(path, buffer, (err) => {
+      if (err) throw err;
+    });
+    return `/public/avatars/${filename}`;
   }
 
   encrypt(text: string): string {

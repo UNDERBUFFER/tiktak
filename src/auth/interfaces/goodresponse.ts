@@ -1,3 +1,0 @@
-interface GoodResponse {
-  code: string;
-}

@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import * as redisStore from 'cache-manager-redis-store';
+import { CacheModule, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { AuthController } from './auth.controller';
@@ -26,6 +27,11 @@ import { User, UserSchema } from 'src/user/schemas/user.schema';
       defaults: {
         from: `"nest-modules" <${process.env.FROM_EMAIL ?? ''}>`,
       },
+    }),
+    CacheModule.register({
+      store: redisStore,
+      host: process.env.REDIS_HOST ?? '',
+      port: Number(process.env.REDIS_PORT ?? 0),
     }),
   ],
   controllers: [AuthController],

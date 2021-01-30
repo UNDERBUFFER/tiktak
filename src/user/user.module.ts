@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import * as redisStore from 'cache-manager-redis-store';
+import { CacheModule, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/user.schema';
 import { UserController } from './user.controller';
@@ -18,6 +19,11 @@ import { AuthCode, AuthCodeSchema } from 'src/auth/schemas/authcode.schema';
         schema: AuthCodeSchema,
       },
     ]),
+    CacheModule.register({
+      store: redisStore,
+      host: process.env.REDIS_HOST ?? '',
+      port: Number(process.env.REDIS_PORT ?? 0),
+    }),
   ],
   controllers: [UserController],
   providers: [UserService, AuthService],

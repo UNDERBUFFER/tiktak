@@ -1,15 +1,25 @@
-import { Controller, Body, Get, Param, Post } from '@nestjs/common';
+import {
+  Controller,
+  Body,
+  Get,
+  Param,
+  Post,
+  CACHE_MANAGER,
+  Inject,
+} from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/create.dto';
 import { UserDocument } from './schemas/user.schema';
 import { UserService } from './user.service';
 import { ConfirnUserDto } from './dto/confirn.dto';
+import { Cache } from 'cache-manager';
 
 @Controller('user')
 export class UserController {
   constructor(
     private userService: UserService,
     private authService: AuthService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   @Get(':id')
@@ -23,7 +33,9 @@ export class UserController {
     @Body() createUserDto: CreateUserDto,
   ): Promise<UserDocument> {
     const user: UserDocument = await this.userService.create(createUserDto);
-    console.log(`code ${(await this.authService.create(user)).code}`);
+    const uniqueUri = this.authService.getUniqueUri();
+    await this.cacheManager.set(uniqueUri, user._id);
+    console.log(`url /auth/${uniqueUri}`);
     return user;
   }
 
@@ -32,7 +44,9 @@ export class UserController {
     const user: UserDocument = await this.userService.getByEmail(
       confirnUserDto.email,
     );
-    console.log(`code ${(await this.authService.create(user)).code}`);
+    const uniqueUri = this.authService.getUniqueUri();
+    await this.cacheManager.set(uniqueUri, user._id);
+    console.log(`url /auth/${uniqueUri}`);
     return user;
   }
 }

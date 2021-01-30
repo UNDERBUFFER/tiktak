@@ -16,10 +16,11 @@ export class AuthService {
 
   async create(
     user: UserDocument,
+    encryptedCode: string,
     sendToEmail: boolean = false,
   ): Promise<AuthCodeDocument> {
     const data: AuthCodeInterface = {
-      code: randomBytes(40).toString('hex'),
+      code: encryptedCode,
       user,
     };
     const authCode = new this.authCodeModel(data);
@@ -32,19 +33,14 @@ export class AuthService {
     return authCode.save();
   }
 
+  getUniqueUri(): string {
+    return randomBytes(40).toString('hex');
+  }
+
   async get(code: string): Promise<AuthCodeDocument> {
     const authCode = await this.authCodeModel.findOne({
       code,
     });
     return authCode;
-  }
-
-  async delete(code: string): Promise<any> {
-    const deletedAuthCode = await this.authCodeModel
-      .findOne({
-        code,
-      })
-      .remove();
-    return deletedAuthCode;
   }
 }

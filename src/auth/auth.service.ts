@@ -24,16 +24,17 @@ export class AuthService {
       user,
     };
     const authCode = new this.authCodeModel(data);
-    if (sendToEmail)
-      await this.mailerService.sendMail({
-        to: user.email,
-        subject: 'Authorization code',
-        text: data.code,
-      });
     return authCode.save();
   }
 
-  getUniqueUri(): string {
+  async getUniqueUri(email?: string): Promise<string> {
+    const code: string = randomBytes(40).toString('hex');
+    if (email)
+      await this.mailerService.sendMail({
+        to: email,
+        subject: 'Authorization url',
+        text: `/auth/${code}`,
+      });
     return randomBytes(40).toString('hex');
   }
 

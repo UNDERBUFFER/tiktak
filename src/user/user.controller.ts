@@ -33,7 +33,7 @@ export class UserController {
     @Body() createUserDto: CreateUserDto,
   ): Promise<UserDocument> {
     const user: UserDocument = await this.userService.create(createUserDto);
-    const uniqueUri = this.authService.getUniqueUri();
+    const uniqueUri = await this.authService.getUniqueUri();
     await this.cacheManager.set(uniqueUri, user._id);
     console.log(`url /auth/${uniqueUri}`);
     return user;
@@ -44,7 +44,7 @@ export class UserController {
     const user: UserDocument = await this.userService.getByEmail(
       confirnUserDto.email,
     );
-    const uniqueUri = this.authService.getUniqueUri();
+    const uniqueUri = await this.authService.getUniqueUri();
     await this.cacheManager.set(uniqueUri, user._id);
     console.log(`url /auth/${uniqueUri}`);
     return user;

@@ -66,4 +66,8 @@ export class ClipsService {
     });
     return `/public/clips/${filename}`;
   }
+
+  async getAll(): Promise<ClipDocument[]> {
+    return await this.clipModel.find({});
+  }
 }

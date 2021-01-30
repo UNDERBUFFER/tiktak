@@ -4,6 +4,8 @@ import { ClipsService } from './clips.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Clip, ClipSchema } from './schemas/clip.schema';
 import { Like, LikeSchema } from './schemas/like.schema';
+import { UserService } from 'src/user/user.service';
+import { User, UserSchema } from 'src/user/schemas/user.schema';
 
 @Module({
   imports: [
@@ -16,9 +18,13 @@ import { Like, LikeSchema } from './schemas/like.schema';
         name: Like.name,
         schema: LikeSchema,
       },
+      {
+        name: User.name,
+        schema: UserSchema,
+      },
     ]),
   ],
   controllers: [ClipsController],
-  providers: [ClipsService],
+  providers: [ClipsService, UserService],
 })
 export class ClipsModule {}

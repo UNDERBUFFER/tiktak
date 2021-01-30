@@ -15,8 +15,6 @@ import { User, UserSchema } from 'src/user/schemas/user.schema';
         name: AuthCode.name,
         schema: AuthCodeSchema,
       },
-    ]),
-    MongooseModule.forFeature([
       {
         name: User.name,
         schema: UserSchema,

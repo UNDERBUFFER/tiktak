@@ -57,8 +57,6 @@ export class UserController {
       request.user.nickname,
     );
     const avatarPath = this.userService.uploadFileToSystem(fileName, buffer);
-    // const data = new UpdateUserDto()
-    // data.avatarPath = avatarPath
     return await this.userService.update(id, { avatarPath });
   }
 

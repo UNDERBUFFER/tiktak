@@ -1,6 +1,6 @@
 ## Development
 
-- `docker compose up mongo maildump`
+- `docker compose up mongo maildump redis`
 - `source variables.sh`
 - `npm start dev`
 - `mongo "mongodb://localhost:27017" -u root -p toor`

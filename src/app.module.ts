@@ -1,4 +1,10 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import * as redisStore from 'cache-manager-redis-store';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  CacheModule,
+} from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -21,6 +27,11 @@ import { ClipsModule } from './clips/clips.module';
         schema: UserSchema,
       },
     ]),
+    CacheModule.register({
+      store: redisStore,
+      host: process.env.REDIS_HOST ?? '',
+      port: Number(process.env.REDIS_PORT ?? 0),
+    }),
     UserModule,
     AuthModule,
     ClipsModule,

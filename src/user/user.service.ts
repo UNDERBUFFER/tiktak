@@ -3,10 +3,16 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create.dto';
 import { User, UserDocument } from './schemas/user.schema';
+import { createCipher, createDecipher } from 'crypto';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  hashAlgorithm: string;
+  hashKey: string;
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {
+    this.hashAlgorithm = 'aes-192-cbc';
+    this.hashKey = process.env.ENCRYPT_KEY ?? '';
+  }
 
   async create(createUserDto: CreateUserDto): Promise<UserDocument> {
     const createdUser = new this.userModel(createUserDto);
@@ -23,5 +29,19 @@ export class UserService {
       email,
     });
     return user;
+  }
+
+  encrypt(text: string): string {
+    const cipher: any = createCipher(this.hashAlgorithm, this.hashKey);
+    const encrypted: string =
+      cipher.update(text, 'utf8', 'hex') + cipher.final('hex');
+    return encrypted;
+  }
+
+  decrypt(text: string): string {
+    const decipher: any = createDecipher(this.hashAlgorithm, this.hashKey);
+    const decrypted: string =
+      decipher.update(text, 'hex', 'utf8') + decipher.final('utf8');
+    return decrypted;
   }
 }

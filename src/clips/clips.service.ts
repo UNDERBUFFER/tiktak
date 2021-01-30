@@ -8,13 +8,17 @@ import { Clip as ClipInterface } from './interfaces/clip.interface';
 import { Like as LikeInterface } from './interfaces/like.interface';
 import { Clip, ClipDocument } from './schemas/clip.schema';
 import { Like, LikeDocument } from './schemas/like.schema';
+import { randomBytes } from 'crypto';
 
 @Injectable()
 export class ClipsService {
+  fileFormat: string
   constructor(
     @InjectModel(Clip.name) private clipModel: Model<ClipDocument>,
     @InjectModel(Like.name) private likeModel: Model<LikeDocument>,
-  ) {}
+  ) {
+    this.fileFormat = process.env.FILE_FORMAT ?? 'mp4'
+  }
 
   async create(user: UserDocument, path: string): Promise<ClipDocument> {
     const data: ClipInterface = { path, user };
@@ -41,6 +45,12 @@ export class ClipsService {
     };
     const like = new this.likeModel(data);
     return like.save();
+  }
+
+  generateFileName(uniqueString: string): string {
+    return `${uniqueString}-clip-${randomBytes(
+      20,
+    ).toString('hex')}.${this.fileFormat}`;
   }
 
   uploadFileToSystem(filename: string, buffer: Buffer): string {

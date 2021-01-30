@@ -17,9 +17,7 @@ export class AuthController {
   async findOne(@Param('uri') uri: string): Promise<AuthCodeDocument> {
     const userId: string = await this.cacheManager.get(uri);
     const user: UserDocument = await this.userService.getById(userId);
-    const code: string = `${user._id}:${user.nickname}:${
-      user.email
-    }:${new Date()}`;
+    const code: string = `${user.nickname}:${Math.floor(Date.now() / 1000)}`;
     return await this.authService.create(user, this.userService.encrypt(code));
   }
 }

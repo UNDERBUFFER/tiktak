@@ -29,6 +29,7 @@ import { User, UserSchema } from 'src/user/schemas/user.schema';
       },
     }),
     CacheModule.register({
+      ttl: 3600,
       store: redisStore,
       host: process.env.REDIS_HOST ?? '',
       port: Number(process.env.REDIS_PORT ?? 0),

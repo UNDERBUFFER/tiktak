@@ -20,6 +20,7 @@ import { AuthCode, AuthCodeSchema } from 'src/auth/schemas/authcode.schema';
       },
     ]),
     CacheModule.register({
+      ttl: 3600,
       store: redisStore,
       host: process.env.REDIS_HOST ?? '',
       port: Number(process.env.REDIS_PORT ?? 0),

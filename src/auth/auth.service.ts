@@ -6,13 +6,19 @@ import { AuthCode, AuthCodeDocument } from './schemas/authcode.schema';
 import { randomBytes } from 'crypto';
 import { MailerService } from '@nestjs-modules/mailer';
 import { UserDocument } from 'src/user/schemas/user.schema';
+import { createCipher, createDecipher } from 'crypto';
 
 @Injectable()
 export class AuthService {
+  hashAlgorithm: string;
+  hashKey: string;
   constructor(
     @InjectModel(AuthCode.name) private authCodeModel: Model<AuthCodeDocument>,
     private readonly mailerService: MailerService,
-  ) {}
+  ) {
+    this.hashAlgorithm = 'aes-192-cbc';
+    this.hashKey = process.env.ENCRYPT_KEY ?? '';
+  }
 
   async create(user: UserDocument): Promise<AuthCodeDocument> {
     const data: AuthCodeInterface = {
@@ -42,5 +48,19 @@ export class AuthService {
       })
       .remove();
     return deletedAuthCode;
+  }
+
+  encrypt(text: string): string {
+    const cipher: any = createCipher(this.hashAlgorithm, this.hashKey);
+    const encrypted: string =
+      cipher.update(text, 'utf8', 'hex') + cipher.final('hex');
+    return encrypted;
+  }
+
+  decrypt(text: string): string {
+    const decipher: any = createDecipher(this.hashAlgorithm, this.hashKey);
+    const decrypted: string =
+      decipher.update(text, 'hex', 'utf8') + decipher.final('utf8');
+    return decrypted;
   }
 }

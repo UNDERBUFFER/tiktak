@@ -44,7 +44,13 @@ export class ClipsService {
   }
 
   uploadFileToSystem(filename: string, buffer: Buffer): string {
-    const path = `${join(__dirname, '..', '..', 'public', 'clips')}/${filename}`;
+    const path = `${join(
+      __dirname,
+      '..',
+      '..',
+      'public',
+      'clips',
+    )}/${filename}`;
     writeFile(path, buffer, (err) => {
       if (err) throw err;
     });

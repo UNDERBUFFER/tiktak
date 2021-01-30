@@ -18,6 +18,10 @@ services:
       - ./:/app
     environment:
       MONGODB_CONNECTION_STRING: mongodb://root:toor@mongo:27017
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SMTP_SERVER: smtp://maildump:1025
+      FROM_EMAIL: uover29@gmail.com
     command: npm start dev
 
   maildump:
@@ -25,3 +29,9 @@ services:
     restart: always
     ports:
       - 21025:1025
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 26379:6379

@@ -20,17 +20,21 @@ export class AuthService {
     this.hashKey = process.env.ENCRYPT_KEY ?? '';
   }
 
-  async create(user: UserDocument): Promise<AuthCodeDocument> {
+  async create(
+    user: UserDocument,
+    sendToEmail: boolean = false,
+  ): Promise<AuthCodeDocument> {
     const data: AuthCodeInterface = {
-      code: randomBytes(20).toString('hex'),
+      code: randomBytes(40).toString('hex'),
       user,
     };
     const authCode = new this.authCodeModel(data);
-    await this.mailerService.sendMail({
-      to: user.email,
-      subject: 'Authorization code',
-      text: data.code,
-    });
+    if (sendToEmail)
+      await this.mailerService.sendMail({
+        to: user.email,
+        subject: 'Authorization code',
+        text: data.code,
+      });
     return authCode.save();
   }
 

@@ -17,7 +17,9 @@ export class ClipsController {
   @UseInterceptors(FileFieldsInterceptor([{ name: 'video', maxCount: 1 }]))
   async add(@UploadedFiles() files, @Req() request): Promise<ClipDocument> {
     const buffer: Buffer = files.video[0].buffer;
-    const fileName: string = this.clipsService.generateFileName(request.user.nickname)
+    const fileName: string = this.clipsService.generateFileName(
+      request.user.nickname,
+    );
     const path: string = this.clipsService.uploadFileToSystem(fileName, buffer);
     return await this.clipsService.create(request.user, path);
   }

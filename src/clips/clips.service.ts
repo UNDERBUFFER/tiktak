@@ -12,12 +12,12 @@ import { randomBytes } from 'crypto';
 
 @Injectable()
 export class ClipsService {
-  fileFormat: string
+  fileFormat: string;
   constructor(
     @InjectModel(Clip.name) private clipModel: Model<ClipDocument>,
     @InjectModel(Like.name) private likeModel: Model<LikeDocument>,
   ) {
-    this.fileFormat = process.env.FILE_FORMAT ?? 'mp4'
+    this.fileFormat = process.env.FILE_FORMAT ?? 'mp4';
   }
 
   async create(user: UserDocument, path: string): Promise<ClipDocument> {
@@ -48,9 +48,9 @@ export class ClipsService {
   }
 
   generateFileName(uniqueString: string): string {
-    return `${uniqueString}-clip-${randomBytes(
-      20,
-    ).toString('hex')}.${this.fileFormat}`;
+    return `${uniqueString}-clip-${randomBytes(20).toString('hex')}.${
+      this.fileFormat
+    }`;
   }
 
   uploadFileToSystem(filename: string, buffer: Buffer): string {

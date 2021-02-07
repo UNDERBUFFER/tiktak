@@ -35,7 +35,7 @@ export class AuthService {
         subject: 'Authorization url',
         text: `/auth/${code}`,
       });
-    return randomBytes(40).toString('hex');
+    return code;
   }
 
   async get(code: string): Promise<AuthCodeDocument> {
